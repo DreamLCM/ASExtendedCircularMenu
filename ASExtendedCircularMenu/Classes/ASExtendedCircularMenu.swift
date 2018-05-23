@@ -69,7 +69,8 @@ public class ASCircularMenuButton: UIButton{
     private var _circularButtonPositon : CircularButtonPosition = .bottomLeft
     public var circularButtonPositon : CircularButtonPosition = .bottomLeft
     
-    
+    public var viewMaskLayer: UIView!
+    public var viewMaskLayerBackgroundColor: UIColor!
     
     //This is varible for redius of circular Menu
     public var menuRedius: CGFloat = 0.0
@@ -209,6 +210,14 @@ public class ASCircularMenuButton: UIButton{
             self.customRadiusForButton()
         }
         if !isSelected{
+            
+            viewMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height))
+            viewMaskLayer.backgroundColor = viewMaskLayerBackgroundColor
+            UIView.animate(withDuration: 0.5) {
+                self.superview?.insertSubview(self.viewMaskLayer, belowSubview: self)
+            }
+            
+            
             //will get all origins
             let origines = setupCGPoints()
             
@@ -260,7 +269,13 @@ public class ASCircularMenuButton: UIButton{
                 
             }
             //arrayButton = []
+            
+            UIView.animate(withDuration: 0.5) {
+                self.viewMaskLayer.removeFromSuperview()
+            }
         }
+        
+    
         self.isSelected = !self.isSelected
         
     }
