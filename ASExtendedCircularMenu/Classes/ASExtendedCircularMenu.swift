@@ -211,7 +211,7 @@ public class ASCircularMenuButton: UIButton{
         }
         if !isSelected{
             
-            viewMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height))
+            viewMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
             viewMaskLayer.backgroundColor = viewMaskLayerBackgroundColor
             UIView.animate(withDuration: 0.5) {
                 self.superview?.insertSubview(self.viewMaskLayer, belowSubview: self)
