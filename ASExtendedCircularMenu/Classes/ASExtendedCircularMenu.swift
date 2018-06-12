@@ -213,6 +213,10 @@ public class ASCircularMenuButton: UIButton{
             
             viewMaskLayer = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
             viewMaskLayer.backgroundColor = viewMaskLayerBackgroundColor
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapAction))
+            viewMaskLayer.addGestureRecognizer(tap)
+            
             UIView.animate(withDuration: 0.5) {
                 self.superview?.insertSubview(self.viewMaskLayer, belowSubview: self)
             }
@@ -255,6 +259,7 @@ public class ASCircularMenuButton: UIButton{
             }
             // If menu is already open
         }else{
+            
             for button in arrayButton{
                 UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
                     button.alpha = 0.0
@@ -279,6 +284,34 @@ public class ASCircularMenuButton: UIButton{
         self.isSelected = !self.isSelected
         
     }
+    
+    /// 蒙层点击功能
+    @objc  func tapAction() {
+       print("点击蒙层")
+        
+        for button in arrayButton{
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+                button.alpha = 0.0
+                button.frame = self.frame
+                self.layoutIfNeeded()
+            }, completion: { (status) in
+                button.removeFromSuperview()
+            })
+            if sholudMenuButtonAnimate{
+                rotate360Degrees(isClockwise: false)
+            }
+            
+        }
+        //arrayButton = []
+        
+        UIView.animate(withDuration: 0.5) {
+            self.viewMaskLayer.removeFromSuperview()
+        }
+        
+        self.isSelected = !self.isSelected
+        
+    }
+    
     
     //This function is used for rotate button on click 360 Degree clock or anticlock wise
     private func rotate360Degrees(duration: CFTimeInterval = 0.2, completionDelegate: AnyObject? = nil , isClockwise: Bool) {
